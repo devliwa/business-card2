@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Card - Sparkle & Shine Cleaning</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="card-container">
+        <div class="card" id="business-card">
+            <div class="card-front">
+                <div class="logo">
+                    <i class="fas fa-broom"></i>
+                    <h1>Sparkle & Shine</h1>
+                    <p>Liwa Cleaning Services</p>
+                </div>
+            </div>
+            <div class="card-back">
+                <div class="content">
+                    <h2>Jane Doe</h2>
+                    <p class="title">Founder & Professional Cleaner</p>
+                    <hr>
+                    <div class="contact-info">
+                        <div class="info-item">
+                            <i class="fas fa-phone"></i>
+                            <span>(555) 123-4567</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-envelope"></i>
+                            <a href="mailto:hello@sparkleshine.com">hello@sparkleshine.com</a>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-globe"></i>
+                            <a href="https://www.sparkleshine.com" target="_blank">www.sparkleshine.com</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="controls">
+            <button id="download-all" class="download-btn">Download Business Card</button>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        const card = document.getElementById('business-card');
+        const downloadBtn = document.getElementById('download-all');
+
+        async function captureSide(side) {
+            const originalTransform = card.style.transform;
+            const originalTransition = card.style.transition;
+            
+            if (side === 'back') {
+                card.style.transform = 'rotateY(180deg)';
+                card.style.transition = 'none';
+            } else {
+                card.style.transform = 'rotateY(0deg)';
+                card.style.transition = 'none';
+            }
+
+            // Small delay to ensure transform is applied
+            await new Promise(resolve => setTimeout(resolve, 150));
+
+            const canvas = await html2canvas(card, {
+                useCORS: true,
+                scale: 2, // Higher quality
+                backgroundColor: null
+            });
+
+            const link = document.createElement('a');
+            link.download = `sparkle-shine-business-card-${side}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+
+            // Reset card state
+            card.style.transform = originalTransform;
+            card.style.transition = originalTransition || 'transform 0.8s';
+        }
+
+        downloadBtn.addEventListener('click', async () => {
+            // Disable button during download to prevent multiple clicks
+            downloadBtn.disabled = true;
+            downloadBtn.innerText = 'Downloading...';
+
+            try {
+                // Download Front
+                await captureSide('front');
+                
+                // Small gap between downloads
+                await new Promise(resolve => setTimeout(resolve, 500));
+                
+                // Download Back
+                await captureSide('back');
+            } catch (error) {
+                console.error('Download failed:', error);
+            } finally {
+                downloadBtn.disabled = false;
+                downloadBtn.innerText = 'Download Business Card';
+            }
+        });
+    </script>
+</body>
+</html>
