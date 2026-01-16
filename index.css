@@ -30,7 +30,8 @@ body {
 }
 
 .card {
-    width: 500px;
+    width: 90vw;
+    max-width: 500px;
     height: 300px;
     position: relative;
     transform-style: preserve-3d;
@@ -38,6 +39,32 @@ body {
     cursor: pointer;
     box-shadow: 0 10px 30px rgba(0,0,0,0.1);
     border-radius: 15px;
+}
+
+@media (max-width: 480px) {
+    .card {
+        height: 250px;
+    }
+    
+    .logo i {
+        font-size: 40px;
+    }
+    
+    .logo h1 {
+        font-size: 22px;
+    }
+    
+    .card-front, .card-back {
+        padding: 20px;
+    }
+
+    .content h2 {
+        font-size: 20px;
+    }
+}
+
+.card.is-flipped {
+    transform: rotateY(180deg);
 }
 
 .card:hover {

@@ -48,6 +48,27 @@
         const card = document.getElementById('business-card');
         const downloadBtn = document.getElementById('download-all');
 
+        // Auto-flip on mobile
+        function checkMobileFlip() {
+            if (window.innerWidth <= 480) {
+                // Delay flip slightly for better visual effect on load
+                setTimeout(() => {
+                    card.classList.add('is-flipped');
+                    // Optional: flip back after some time or keep it
+                    setTimeout(() => {
+                        card.classList.remove('is-flipped');
+                    }, 3000);
+                }, 1000);
+            }
+        }
+
+        window.addEventListener('load', checkMobileFlip);
+
+        // Toggle flip on click (especially useful for mobile)
+        card.addEventListener('click', () => {
+            card.classList.toggle('is-flipped');
+        });
+
         async function captureSide(side) {
             const originalTransform = card.style.transform;
             const originalTransition = card.style.transition;
